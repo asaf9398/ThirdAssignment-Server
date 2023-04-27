@@ -8,7 +8,12 @@ namespace ThirdAssignment_Server
     public class ToDoList
     {
         static int nextId=1;
-        List<ToDoTask> tasksList;
+        public List<ToDoTask> tasksList { get; set; }
+        
+        public ToDoList()
+        {
+            tasksList = new List<ToDoTask>();
+        }
 
     }
 }

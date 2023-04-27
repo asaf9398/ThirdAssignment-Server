@@ -15,6 +15,14 @@ namespace ThirdAssignment_Server
         public string content { get; set; }
         public DateTime dueDate { get; set; }
         public Status status { get; set; }
+        public ToDoTask(int _uniqueId,string _title,string _content,DateTime _dueDate)
+        {
+            uniqueId = _uniqueId;
+            title = _title;
+            content = _content;
+            dueDate = _dueDate;
+            status = Status.PENDING;
+        }
 
     }
 }
