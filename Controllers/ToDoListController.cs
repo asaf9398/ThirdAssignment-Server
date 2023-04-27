@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace ThirdAssignment_Server.Controllers
 {
-    public class Health : Controller
-    { 
-        // Get: Health
-        [HttpGet]
-        [Route("/todo/health")]
-        public ActionResult<string> CheckHealth()
+    public class ToDoListController : Controller
+    {
+        [HttpPost]
+        [Route("/todo")]
+        public ActionResult<string> CreateNewToDo()
         {
             string message = "OK";
             return Ok(message);
