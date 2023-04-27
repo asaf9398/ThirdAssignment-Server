@@ -14,5 +14,10 @@ namespace ThirdAssignment_Server
             result = _result;
             errorMessage = _errorMessage;
         }
+        public Response()
+        {
+            result = "";
+            errorMessage = "";
+        }
     }
 }

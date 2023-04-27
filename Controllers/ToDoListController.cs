@@ -27,6 +27,25 @@ namespace ThirdAssignment_Server.Controllers
             toDoList.tasksList.Add(newTask);
             return StatusCode(200, JsonConvert.SerializeObject(new Response($"{newTask.uniqueId}", "")));
         }
+
+        [HttpGet]
+        [Route("/todo/size")]
+        public ActionResult<string> GetToDoCount([FromQuery] string status)
+        {
+            int numOfToDo = countToDoByFilter(status);
+            if (numOfToDo < 0)
+            {
+                //if error return error
+                return StatusCode(400, JsonConvert.SerializeObject(new Response()));
+
+            }
+            return StatusCode(200, JsonConvert.SerializeObject(new Response($"{numOfToDo}", "")));
+        }
+
+
+
+
+
         public class AssignmentData
         {
             public string title { get; set; }
@@ -53,6 +72,32 @@ namespace ThirdAssignment_Server.Controllers
         public bool TimeStampIsNotGood(long dueDate)
         {
             return (DateTimeOffset.UtcNow.ToUnixTimeSeconds() < dueDate);
+        }
+        public int countToDoByFilter(string status)
+        {
+            int count = 0;
+            if (status == "ALL" || status == "LATE" || status == "PENDING" || status == "DONE")
+            {
+                foreach (var item in toDoList.tasksList)
+                {
+                    if (status == "ALL")
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        if (status == ToDoTask.statusStr[((int)item.status)])
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                count = -1;
+            }
+            return count;
         }
     }
 }

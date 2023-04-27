@@ -10,7 +10,7 @@ namespace ThirdAssignment_Server
     public class ToDoTask
     {
         static int nextId = 1;
-        static string[] statusStr = { "PENDING", "LATE", "DONE" };
+        public static string[] statusStr = { "PENDING", "LATE", "DONE" };
         public int uniqueId { get; set; }
         public string title { get; set; }
         public string content { get; set; }
