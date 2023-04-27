@@ -9,20 +9,22 @@ namespace ThirdAssignment_Server
     public enum Status { PENDING, LATE, DONE }
     public class ToDoTask
     {
-        static int nextId = 1;
+        public static int nextId = 1;
         public static string[] statusStr = { "PENDING", "LATE", "DONE" };
-        public int uniqueId { get; set; }
+        public int id { get; set; }
         public string title { get; set; }
         public string content { get; set; }
         public long dueDate { get; set; }
-        public Status status { get; set; }
+        public Status statusIndex { get; set; }
+        public string status { get; set; }
         public ToDoTask(string _title,string _content,long _dueDate)
         {
-            uniqueId = nextId;
+            id = nextId;
             title = _title;
             content = _content;
             dueDate = _dueDate;
-            status = Status.PENDING;
+            statusIndex = Status.PENDING;
+            status = statusStr[((int)statusIndex)];
             nextId++;
         }
 
