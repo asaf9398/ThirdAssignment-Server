@@ -25,7 +25,7 @@ namespace ThirdAssignment_Server.Controllers
             }
             ToDoTask newTask = new ToDoTask(jsonData.title, jsonData.content, jsonData.dueDate);
             toDoList.tasksList.Add(newTask);
-            return StatusCode(200, JsonConvert.SerializeObject(new Response($"{newTask.id}", "")));
+            return StatusCode(200, JsonConvert.SerializeObject(new Response(newTask.id, "")));
         }
 
         [HttpGet]
@@ -39,7 +39,7 @@ namespace ThirdAssignment_Server.Controllers
                 return StatusCode(400, JsonConvert.SerializeObject(new Response()));
 
             }
-            return StatusCode(200, JsonConvert.SerializeObject(new Response($"{numOfToDo}", "")));
+            return StatusCode(200, JsonConvert.SerializeObject(new Response(numOfToDo, "")));
         }
 
 
@@ -49,13 +49,13 @@ namespace ThirdAssignment_Server.Controllers
         {
             if (!IsLegalStatus(status) || !IsLegalSortBy(sortBy))
             {
-                return StatusCode(400, JsonConvert.SerializeObject(new Response(JsonConvert.SerializeObject(Array.Empty<ToDoContent>()), "")));
+                return StatusCode(400, JsonConvert.SerializeObject(new Response(Array.Empty<ToDoContent>(), "")));
             }
 
             if (ToDoTask.nextId == 1)
             {
                 //if there are no elements yet
-                return StatusCode(200, JsonConvert.SerializeObject(new Response(JsonConvert.SerializeObject(Array.Empty<ToDoContent>()), "")));
+                return StatusCode(200, JsonConvert.SerializeObject(new Response(Array.Empty<ToDoContent>(), "")));
             }
             ToDoContent[] toDoContentArray = GetToDoContentArray(toDoList.tasksList, status);
             switch (sortBy)
@@ -76,7 +76,7 @@ namespace ThirdAssignment_Server.Controllers
                     break;
             }
 
-            return StatusCode(200, JsonConvert.SerializeObject(new Response(JsonConvert.SerializeObject(toDoContentArray), "")));
+            return StatusCode(200, JsonConvert.SerializeObject(new Response(toDoContentArray, "")));
         }
 
         [HttpPut]
@@ -92,7 +92,7 @@ namespace ThirdAssignment_Server.Controllers
                 return StatusCode(404, JsonConvert.SerializeObject(new Response("", $"Error: no such TODO with id {id}")));
             }
             string oldStatus = UpdateStatus(id, status);
-            return StatusCode(200, JsonConvert.SerializeObject(new Response($"{oldStatus}", "")));
+            return StatusCode(200, JsonConvert.SerializeObject(new Response(oldStatus, "")));
         }
 
         [HttpDelete]
@@ -105,7 +105,7 @@ namespace ThirdAssignment_Server.Controllers
             }
             DeleteToDoFromList(id);
             int leftToDoInList = toDoList.tasksList.Count;
-            return StatusCode(200, JsonConvert.SerializeObject(new Response($"{leftToDoInList}", "")));
+            return StatusCode(200, JsonConvert.SerializeObject(new Response(leftToDoInList, "")));
         }
         void DeleteToDoFromList(int id)
         {
