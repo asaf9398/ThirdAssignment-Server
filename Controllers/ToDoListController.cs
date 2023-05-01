@@ -13,8 +13,15 @@ namespace ThirdAssignment_Server.Controllers
 
         [HttpPost]
         [Route("/todo")]
-        public ActionResult<string> CreateNewToDo([FromBody] AssignmentData jsonData)
+        public ActionResult<string> CreateNewToDo([FromBody] string jsonTitle, [FromBody] string jsonContent, [FromBody] string jsonDueDate)
         {
+            long dueDate;
+            if (!long.TryParse(jsonDueDate, out dueDate))
+            {
+                return StatusCode(400, JsonConvert.SerializeObject(new Response("", $"Error: unvalid input {jsonDueDate} datected")));
+            }
+
+            AssignmentData jsonData = new AssignmentData(jsonTitle,jsonContent,dueDate);
             if (IsAlreadyTaken(jsonData.title))
             {
                 return StatusCode(409, JsonConvert.SerializeObject(new Response("", $"Error: TODO with the title[{jsonData.title}] already exists in the system")));
@@ -234,6 +241,12 @@ namespace ThirdAssignment_Server.Controllers
             public string title { get; set; }
             public string content { get; set; }
             public long dueDate { get; set; }
+            public AssignmentData(string _title,string _content,long _dueDate)
+            {
+                title = _title;
+                content = _content;
+                dueDate = _dueDate;
+            }
         }
         public bool IsAlreadyTaken(string currTitle)
         {
