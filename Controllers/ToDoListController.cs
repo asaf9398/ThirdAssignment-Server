@@ -92,6 +92,11 @@ namespace ThirdAssignment_Server.Controllers
             {
                 return StatusCode(400, JsonConvert.SerializeObject(new Response()));
             }
+            if (id==0)
+            {
+                return StatusCode(400, JsonConvert.SerializeObject(new Response()));
+            }
+
             if (!ThereIsToDoWithID(id))
             {
                 return StatusCode(404, JsonConvert.SerializeObject(new Response("", $"Error: no such TODO with id {id}")));
