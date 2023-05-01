@@ -44,7 +44,7 @@ namespace ThirdAssignment_Server
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ThirdAssignment_Server v1"));
             //}
 
-            app.UseHttpsRedirection();
+       
 
             app.UseRouting();
 

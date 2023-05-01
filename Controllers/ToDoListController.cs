@@ -15,6 +15,11 @@ namespace ThirdAssignment_Server.Controllers
         [Route("/todo")]
         public ActionResult<string> CreateNewToDo([FromBody] AssignmentData jsonData)
         {
+            if (jsonData==null)
+            {
+                return StatusCode(400, JsonConvert.SerializeObject(new Response("", $"Bad request - unvalid json entered")));
+
+            }
             if (IsAlreadyTaken(jsonData.title))
             {
                 return StatusCode(409, JsonConvert.SerializeObject(new Response("", $"Error: TODO with the title[{jsonData.title}] already exists in the system")));
