@@ -4,12 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace ThirdAssignment_Server.Controllers
 {
     public class ToDoListController : Controller
     {
         public static ToDoList toDoList = new ToDoList();
+        private readonly ILogger<ToDoListController> requestsLogger;
+        private readonly ILogger<ToDoListController> toDoLogger;
+
+        public ToDoListController(ILoggerFactory loggerFactory)
+        {
+            requestsLogger = loggerFactory.CreateLogger<ToDoListController>("request-logger");
+            toDoLogger = loggerFactory.CreateLogger<ToDoListController>("todo-logger");
+            var logger = Log.ForContext<MyController>(); // Get the logger context for MyController
+
+            requestsLogger = logger.ForContext("LoggerName", "Logger1"); // Assign the name "Logger1" to logger1
+            toDoLogger = logger.ForContext("LoggerName", "Logger2"); // Assign the name "Logger2" to logger2
+
+        }
 
         [HttpPost]
         [Route("/todo")]

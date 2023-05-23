@@ -11,11 +11,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
 
 namespace ThirdAssignment_Server
 {
     public class Startup
     {
+        public int requestsCounter = 1;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +31,17 @@ namespace ThirdAssignment_Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Information() // Set the minimum log level (e.g., Debug, Information, Warning)
+        .WriteTo.File("logs\\requests.log", rollingInterval: RollingInterval.Day) // Configure log file creation and rolling (e.g., daily)
+        .WriteTo.Console()
+        .CreateLogger();
+
+            services.AddLogging(builder =>
+            {
+                builder.ClearProviders();
+                builder.AddSerilog();
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -35,21 +51,13 @@ namespace ThirdAssignment_Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            //if (env.IsDevelopment())
-            //{
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ThirdAssignment_Server v1"));
-            //}
-
-       
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
