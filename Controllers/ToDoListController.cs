@@ -4,12 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 namespace ThirdAssignment_Server.Controllers
 {
     public class ToDoListController : Controller
     {
         public static ToDoList toDoList = new ToDoList();
+        private readonly ILogger<ToDoListController> _requestsLogger;
+        private readonly ILogger<ToDoListController> _toDoLogger;
+        public ToDoListController(ILogger<ToDoListController> requestsLogger, ILogger<ToDoListController> toDoLogger)
+        {
+            _requestsLogger = requestsLogger;
+            _toDoLogger = toDoLogger;
+        }
 
         [HttpPost]
         [Route("/todo")]
