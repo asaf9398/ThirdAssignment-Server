@@ -36,6 +36,7 @@ namespace ThirdAssignment_Server
             // Add the first logger
             services.AddLogging(builder =>
             {
+                builder.ClearProviders(); // Clear existing logging providers
                 builder.AddSerilog(dispose: true); // Dispose the logger when the application shuts down
             });
 
@@ -47,6 +48,7 @@ namespace ThirdAssignment_Server
             // Add the second logger
             services.AddLogging(builder =>
             {
+                builder.ClearProviders(); // Clear existing logging providers
                 builder.AddSerilog(dispose: true); // Dispose the logger when the application shuts down
             });
 
