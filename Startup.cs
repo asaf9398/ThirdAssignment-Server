@@ -26,6 +26,17 @@ namespace ThirdAssignment_Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(configure =>
+            {
+                configure.AddConsole(); // Optional: Add console logging provider
+                configure.AddDebug();   // Optional: Add debug output logging provider
+
+                // Add your custom loggers with different names
+                configure.AddProvider(new LoggerProvider("Logger1"));
+                configure.AddProvider(new LoggerProvider("Logger2"));
+
+                // Add any other logging providers as needed
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
