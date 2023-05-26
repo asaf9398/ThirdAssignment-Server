@@ -31,7 +31,8 @@ namespace ThirdAssignment_Server
             // Configure Serilog
             Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
                 .Enrich.WithProperty("request-logger", "requestsLogger")
-                .WriteTo.File("\\logs\\requests.log") // Path to the first log file
+                .WriteTo.File(".\\logs\\requests.log") // Path to the first log file
+                .WriteTo.Console()
                 .CreateLogger();
 
             // Add the first logger
@@ -44,7 +45,8 @@ namespace ThirdAssignment_Server
             // Configure Serilog for the second logger
             Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
                 .Enrich.WithProperty("todo-logger", "toDoLogger")
-                .WriteTo.File("\\logs\\todos.log") // Path to the second log file
+                .WriteTo.File(".\\logs\\todos.log") // Path to the second log file
+                .WriteTo.Console()
                 .CreateLogger();
 
             // Add the second logger

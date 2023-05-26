@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace ThirdAssignment_Server.Controllers
 {
