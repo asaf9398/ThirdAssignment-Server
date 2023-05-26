@@ -29,7 +29,7 @@ namespace ThirdAssignment_Server
         {
 
             // Configure Serilog
-            Log.Logger = new LoggerConfiguration()
+            Log.Logger = new LoggerConfiguration().Enrich.WithProperty("request-logger", "requestsLogger")
                 .WriteTo.File("\\logs\\requests.log") // Path to the first log file
                 .CreateLogger();
 
@@ -40,7 +40,7 @@ namespace ThirdAssignment_Server
             });
 
             // Configure Serilog for the second logger
-            Log.Logger = new LoggerConfiguration()
+            Log.Logger = new LoggerConfiguration().Enrich.WithProperty("todo-logger", "toDoLogger")
                 .WriteTo.File("\\logs\\todos.log") // Path to the second log file
                 .CreateLogger();
 
