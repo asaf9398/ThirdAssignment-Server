@@ -22,10 +22,6 @@ namespace ThirdAssignment_Server.Controllers
             {
                 return StatusCode(400, "No such logger");
             }
-            //ILog logger = LogManager.GetLogger(Assembly.GetExecutingAssembly(),loggerName);
-            //Level loggerLevel = ((ILogger)logger.Logger).Level;
-            //Level loggerLevel=(logger.Logger).Repository.
-            //log4net.Config.ConfiguratorAttribute
             ILog logger = LogManager.GetLogger(loggerName);
             ILoggerRepository repository = LogManager.GetRepository();
             Logger loggerObject = (Logger)repository.GetLogger(logger.Logger.Name);
@@ -41,6 +37,33 @@ namespace ThirdAssignment_Server.Controllers
                                                    // ...
             }
             return StatusCode(200, $"{levelName}");
+        }
+
+
+        [HttpPut]
+        [Route("/logs/level")]
+        public ActionResult<string> SetLevel([FromQuery(Name = "logger-name")] string loggerName, [FromQuery(Name = "logger-level")] string newLoggerLevel)
+        {
+            if (loggerName != "request-logger" && loggerName != "todo-logger")
+            {
+                return StatusCode(400, "No such logger");
+            }
+            if (newLoggerLevel != "ERROR" && newLoggerLevel != "DEBUG" && newLoggerLevel != "INFO")
+            {
+                return StatusCode(400, "No such level");
+            }
+            ILog logger = LogManager.GetLogger(loggerName);
+            ILoggerRepository repository = LogManager.GetRepository();
+            Logger loggerObject = (Logger)repository.GetLogger(logger.Logger.Name);
+
+            // Get the log level from the LevelMap
+            Level level = loggerObject.Hierarchy.LevelMap[newLoggerLevel];
+
+            // Set the log level for the logger
+            loggerObject.Level = level;
+
+
+            return StatusCode(200, $"{newLoggerLevel}");
         }
     }
 }
