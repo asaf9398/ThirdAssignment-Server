@@ -7,11 +7,11 @@ namespace ThirdAssignment_Server
 {
     public static class RequestsCounter
     {
-        private static int requestsCounter = 1;
-        public static int GetRequsetsCounter()
+        private static int counter = 1;
+        public static int GetCounter()
         {
-            int oldCounter = requestsCounter;
-            requestsCounter++;
+            int oldCounter = counter;
+            counter++;
             return oldCounter;
         }
     }

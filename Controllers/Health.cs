@@ -5,19 +5,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
+using log4net.Repository;
+using System.Reflection;
+using log4net.Core;
+using System.Diagnostics;
 
 
 namespace ThirdAssignment_Server.Controllers
 {
     public class Health : Controller
     {
-        private readonly ILogger<Health> _requestsLogger;
-        private readonly ILogger<Health> _toDoLogger;
-        
-        public Health(ILogger<Health> requestsLogger, ILogger<Health> toDoLogger)
+        private ILog _requestsLogger;
+        private ILog _toDoLogger;
+
+        public Health()
         {
-            _requestsLogger = requestsLogger;
-            _toDoLogger = toDoLogger;
+            _requestsLogger = LogManager.GetLogger("request-logger");
+            _toDoLogger = LogManager.GetLogger("todo-logger");
         }
 
         // Get: Health
@@ -25,9 +30,20 @@ namespace ThirdAssignment_Server.Controllers
         [Route("/todo/health")]
         public ActionResult<string> CheckHealth()
         {
+            //logging
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            int requestNumber = RequestsCounter.GetCounter();
+            log4net.GlobalContext.Properties["request-number"] = requestNumber;
+            _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");          
+            
+            //FUNCTION
             string message = "OK";
-            _requestsLogger.LogInformation($"Incoming request | #{RequestsCounter.GetRequsetsCounter()} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
-            //_toDoLogger.LogInformation($"Incoming request | #{RequestsCounter.GetRequsetsCounter()} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
+            
+            //other logging 
+            stopwatch.Stop();
+            long elapsedTimeMs = stopwatch.ElapsedMilliseconds;
+            _requestsLogger.Debug($"request #{requestNumber} duration: {elapsedTimeMs}ms");
             return Ok(message);
         }
     }
