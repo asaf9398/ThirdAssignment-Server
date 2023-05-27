@@ -18,7 +18,7 @@ namespace ThirdAssignment_Server.Controllers
         private ILog _requestsLogger;
         public LoggerController()
         {
-            _requestsLogger = LogManager.GetLogger("request-logger");         
+            _requestsLogger = LogManager.GetLogger("request-logger");
         }
 
         [HttpGet]
@@ -42,7 +42,7 @@ namespace ThirdAssignment_Server.Controllers
             ILog logger = LogManager.GetLogger(loggerName);
             ILoggerRepository repository = LogManager.GetRepository();
             Logger loggerObject = (Logger)repository.GetLogger(logger.Logger.Name);
-            string levelName="";
+            string levelName = "";
             int levelValue;
             var loggerLevel = loggerObject.Level;
 
@@ -77,14 +77,14 @@ namespace ThirdAssignment_Server.Controllers
 
             if (loggerName != "request-logger" && loggerName != "todo-logger")
             {
-                errorMessage = $"No such logger named {loggerName}";               
+                errorMessage = $"No such logger named {loggerName}";
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(400, errorMessage);
             }
 
             if (newLoggerLevel != "ERROR" && newLoggerLevel != "DEBUG" && newLoggerLevel != "INFO")
             {
-                errorMessage = $"No such level \"{newLoggerLevel}\"";              
+                errorMessage = $"No such level \"{newLoggerLevel}\"";
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(400, errorMessage);
             }
@@ -94,22 +94,22 @@ namespace ThirdAssignment_Server.Controllers
             Logger loggerObject = (Logger)repository.GetLogger(logger.Logger.Name);
             if (loggerObject == null)
             {
-                errorMessage = $"Error while getting {loggerName} logger object";                
+                errorMessage = $"Error while getting {loggerName} logger object";
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(409, errorMessage);
             }
 
             // Get the log level from the LevelMap
             Level level = loggerObject.Hierarchy.LevelMap[newLoggerLevel];
-           
-            if (level==null)
+
+            if (level == null)
             {
-                errorMessage = $"Error while getting {loggerName} level property";               
+                errorMessage = $"Error while getting {loggerName} level property";
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(409, errorMessage);
             }
             // Set the log level for the logger
-            loggerObject.Level = level;                    
+            loggerObject.Level = level;
             StopWatchAndWriteLog(stopwatch, requestNumber);
             return StatusCode(200, $"{newLoggerLevel}");
         }
