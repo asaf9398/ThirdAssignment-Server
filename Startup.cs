@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net.Config;
+using System.IO;
 
 namespace ThirdAssignment_Server
 {
@@ -18,6 +19,7 @@ namespace ThirdAssignment_Server
     {
         public Startup(IConfiguration configuration)
         {
+            XmlConfigurator.Configure(new FileInfo("log4net.config"));
             Configuration = configuration;
         }
 
