@@ -36,7 +36,6 @@ namespace ThirdAssignment_Server.Controllers
             {
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 errorMessage = $"Bad request - unvalid json entered";
-                _toDoLogger.Error(errorMessage);
                 return StatusCode(400, JsonConvert.SerializeObject(new Response("", errorMessage)));
 
             }
@@ -80,7 +79,6 @@ namespace ThirdAssignment_Server.Controllers
             if (numOfToDo < 0)
             {
                 //if error return error
-                _toDoLogger.Error(errorMessage);
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(400, JsonConvert.SerializeObject(new Response()));
             }
@@ -104,7 +102,6 @@ namespace ThirdAssignment_Server.Controllers
 
             if (!IsLegalStatus(status) || !IsLegalSortBy(sortBy))
             {
-                _toDoLogger.Error(errorMessage);
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(400, JsonConvert.SerializeObject(new Response(Array.Empty<ToDoContent>(), errorMessage)));
             }
@@ -153,20 +150,18 @@ namespace ThirdAssignment_Server.Controllers
 
             if (!IsLegalStatus(status) || status == "ALL")
             {
-                _toDoLogger.Error("");
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(400, JsonConvert.SerializeObject(new Response()));
             }
             if (id == 0)
             {
-                _toDoLogger.Error("");
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(400, JsonConvert.SerializeObject(new Response()));
             }
 
             if (!ThereIsToDoWithID(id))
             {
-                _toDoLogger.Error("");
+                _toDoLogger.Error($"Error: no such TODO with id {id}");
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(404, JsonConvert.SerializeObject(new Response("", $"Error: no such TODO with id {id}")));
             }
