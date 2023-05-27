@@ -72,8 +72,7 @@ namespace ThirdAssignment_Server.Controllers
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
             log4net.GlobalContext.Properties["request-number"] = requestNumber;
-            _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
-            string errorMessage="";
+            _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");            
 
             int numOfToDo = countToDoByFilter(status);
             if (numOfToDo < 0)
