@@ -29,6 +29,7 @@ namespace ThirdAssignment_Server.Controllers
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
+            
 
             if (jsonData==null)
             {
@@ -48,6 +49,9 @@ namespace ThirdAssignment_Server.Controllers
             }
             ToDoTask newTask = new ToDoTask(jsonData.title, jsonData.content, jsonData.dueDate);
             toDoList.tasksList.Add(newTask);
+
+            _toDoLogger.Info($"Creating new TODO with Title [{jsonData.title}]");
+            _toDoLogger.Debug($"Currently there are {toDoList.tasksList.Count} TODOs in the system. New TODO will be assigned with id {newTask.id}");
 
             StopWatchAndWriteLog(stopwatch, requestNumber);
             return StatusCode(200, JsonConvert.SerializeObject(new Response(newTask.id, "")));
@@ -70,6 +74,7 @@ namespace ThirdAssignment_Server.Controllers
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(400, JsonConvert.SerializeObject(new Response()));
             }
+            _toDoLogger.Info($"Total TODOs count for state {status} is {numOfToDo}");
             StopWatchAndWriteLog(stopwatch, requestNumber);
             return StatusCode(200, JsonConvert.SerializeObject(new Response(numOfToDo, "")));
         }
@@ -97,6 +102,7 @@ namespace ThirdAssignment_Server.Controllers
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(200, JsonConvert.SerializeObject(new Response(Array.Empty<ToDoContent>(), "")));
             }
+            _toDoLogger.Info($"Extracting todos content. Filter: {status} | Sorting by: {sortBy}");
             ToDoContent[] toDoContentArray = GetToDoContentArray(toDoList.tasksList, status);
             switch (sortBy)
             {
@@ -115,6 +121,7 @@ namespace ThirdAssignment_Server.Controllers
                 default:
                     break;
             }
+            _toDoLogger.Debug($"There are a total of {toDoList.tasksList.Count} todos in the system. The result holds {toDoContentArray.Length} todos");
             StopWatchAndWriteLog(stopwatch, requestNumber);
             return StatusCode(200, JsonConvert.SerializeObject(new Response(toDoContentArray, "")));
         }
@@ -128,6 +135,7 @@ namespace ThirdAssignment_Server.Controllers
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
+            _toDoLogger.Info($"Update TODO id [{id}] state to {status}");
 
             if (!IsLegalStatus(status) || status == "ALL")
             {
@@ -145,6 +153,9 @@ namespace ThirdAssignment_Server.Controllers
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(404, JsonConvert.SerializeObject(new Response("", $"Error: no such TODO with id {id}")));
             }
+
+            _toDoLogger.Debug($"Todo id [{id}] state change: {GetOldStatus(id)} --> {status}");
+            
             string oldStatus = UpdateStatus(id, status);
             StopWatchAndWriteLog(stopwatch, requestNumber);
             return StatusCode(200, JsonConvert.SerializeObject(new Response(oldStatus, "")));
@@ -165,8 +176,13 @@ namespace ThirdAssignment_Server.Controllers
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(404, JsonConvert.SerializeObject(new Response("", $"Error: no such TODO with id {id}")));
             }
+            _toDoLogger.Info($"Removing todo id {id}");
+
             DeleteToDoFromList(id);
             int leftToDoInList = toDoList.tasksList.Count;
+            
+            _toDoLogger.Debug($"After removing todo id [{id}] there are {leftToDoInList} TODOs in the system");
+            
             StopWatchAndWriteLog(stopwatch, requestNumber);
             return StatusCode(200, JsonConvert.SerializeObject(new Response(leftToDoInList, "")));
         }
@@ -178,6 +194,19 @@ namespace ThirdAssignment_Server.Controllers
             stopwatch.Stop();
             long elapsedTimeMs = stopwatch.ElapsedMilliseconds;
             _requestsLogger.Debug($"request #{requestNumber} duration: {elapsedTimeMs}ms");
+        }
+        string GetOldStatus(int id)
+        {
+            string oldStatus="";
+            foreach (var item in toDoList.tasksList)
+            {
+                if (item.id == id)
+                {
+                    oldStatus = item.status;
+                    break;
+                }
+            }
+            return oldStatus;
         }
         void DeleteToDoFromList(int id)
         {
