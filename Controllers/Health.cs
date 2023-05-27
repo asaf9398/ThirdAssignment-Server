@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using log4net.Repository;
 using System.Reflection;
 using log4net.Core;
 using System.Diagnostics;
+
 
 namespace ThirdAssignment_Server.Controllers
 {
@@ -42,7 +44,6 @@ namespace ThirdAssignment_Server.Controllers
             stopwatch.Stop();
             long elapsedTimeMs = stopwatch.ElapsedMilliseconds;
             _requestsLogger.Debug($"request #{requestNumber} duration: {elapsedTimeMs}ms");
-
             return Ok(message);
         }
     }

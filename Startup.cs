@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,36 @@ namespace ThirdAssignment_Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Configure Serilog
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
+                .Enrich.WithProperty("request-logger", "requestsLogger")
+                .WriteTo.File(".\\logs\\requests.log") // Path to the first log file
+                .WriteTo.Console()
+                .CreateLogger();
+
+            // Add the first logger
+            services.AddLogging(builder =>
+            {
+                builder.ClearProviders(); // Clear existing logging providers
+                builder.AddSerilog(dispose: true); // Dispose the logger when the application shuts down
+            });
+
+            // Configure Serilog for the second logger
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
+                .Enrich.WithProperty("todo-logger", "toDoLogger")
+                .WriteTo.File(".\\logs\\todos.log") // Path to the second log file
+                .WriteTo.Console()
+                .CreateLogger();
+
+            // Add the second logger
+            services.AddLogging(builder =>
+            {
+                builder.ClearProviders(); // Clear existing logging providers
+                builder.AddSerilog(dispose: true); // Dispose the logger when the application shuts down
+            });
+
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
