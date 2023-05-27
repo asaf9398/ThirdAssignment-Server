@@ -28,8 +28,9 @@ namespace ThirdAssignment_Server.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
+            log4net.GlobalContext.Properties["request-number"] = requestNumber;
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
-            
+           
 
             if (jsonData==null)
             {
@@ -65,6 +66,7 @@ namespace ThirdAssignment_Server.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
+            log4net.GlobalContext.Properties["request-number"] = requestNumber;
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
 
             int numOfToDo = countToDoByFilter(status);
@@ -88,6 +90,7 @@ namespace ThirdAssignment_Server.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
+            log4net.GlobalContext.Properties["request-number"] = requestNumber;
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
 
             if (!IsLegalStatus(status) || !IsLegalSortBy(sortBy))
@@ -134,6 +137,7 @@ namespace ThirdAssignment_Server.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
+            log4net.GlobalContext.Properties["request-number"] = requestNumber;
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
             _toDoLogger.Info($"Update TODO id [{id}] state to {status}");
 
@@ -169,6 +173,7 @@ namespace ThirdAssignment_Server.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
+            log4net.GlobalContext.Properties["request-number"] = requestNumber;
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
 
             if (!ThereIsToDoWithID(id))

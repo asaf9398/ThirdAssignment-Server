@@ -32,6 +32,7 @@ namespace ThirdAssignment_Server.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
+            log4net.GlobalContext.Properties["request-number"] = requestNumber;
             _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");          
             
             //FUNCTION
