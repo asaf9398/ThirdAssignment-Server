@@ -53,11 +53,12 @@ namespace ThirdAssignment_Server.Controllers
                 StopWatchAndWriteLog(stopwatch, requestNumber);
                 return StatusCode(409, JsonConvert.SerializeObject(new Response("", errorMessage)));
             }
+            int lastCountBeforeAdding = toDoList.tasksList.Count;
             ToDoTask newTask = new ToDoTask(jsonData.title, jsonData.content, jsonData.dueDate);
             toDoList.tasksList.Add(newTask);
 
             _toDoLogger.Info($"Creating new TODO with Title [{jsonData.title}]");
-            _toDoLogger.Debug($"Currently there are {toDoList.tasksList.Count} TODOs in the system. New TODO will be assigned with id {newTask.id}");
+            _toDoLogger.Debug($"Currently there are {lastCountBeforeAdding} TODOs in the system. New TODO will be assigned with id {newTask.id}");
 
             StopWatchAndWriteLog(stopwatch, requestNumber);
             return StatusCode(200, JsonConvert.SerializeObject(new Response(newTask.id, "")));
