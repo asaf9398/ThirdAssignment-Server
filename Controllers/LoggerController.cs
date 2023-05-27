@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using log4net;
 using log4net.Core;
 using System.Reflection;
+using log4net.Repository;
+using log4net.Repository.Hierarchy;
 
 namespace ThirdAssignment_Server.Controllers
 {
@@ -20,11 +22,25 @@ namespace ThirdAssignment_Server.Controllers
             {
                 return StatusCode(400, "No such logger");
             }
-            ILog logger = LogManager.GetLogger(Assembly.GetExecutingAssembly(),loggerName);
+            //ILog logger = LogManager.GetLogger(Assembly.GetExecutingAssembly(),loggerName);
             //Level loggerLevel = ((ILogger)logger.Logger).Level;
             //Level loggerLevel=(logger.Logger).Repository.
             //log4net.Config.ConfiguratorAttribute
-            return StatusCode(200, "No such logger");
+            ILog logger = LogManager.GetLogger(loggerName);
+            ILoggerRepository repository = LogManager.GetRepository();
+            Logger loggerObject = (Logger)repository.GetLogger(logger.Logger.Name);
+            string levelName="";
+            int levelValue;
+            var loggerLevel = loggerObject.Level;
+
+            if (loggerLevel != null)
+            {
+                // Access the logger level properties
+                levelName = loggerLevel.Name; // e.g., "INFO", "DEBUG", etc.
+                levelValue = loggerLevel.Value; // e.g., 20000, 10000, etc.
+                                                   // ...
+            }
+            return StatusCode(200, $"{levelName}");
         }
     }
 }
