@@ -1,16 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using log4net.Config;
 using System.IO;
 
@@ -30,36 +22,6 @@ namespace ThirdAssignment_Server
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // Configure Serilog
-            Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
-                .Enrich.WithProperty("request-logger", "requestsLogger")
-                .WriteTo.File(".\\logs\\requests.log") // Path to the first log file
-                .WriteTo.Console()
-                .CreateLogger();
-
-            // Add the first logger
-            services.AddLogging(builder =>
-            {
-                builder.ClearProviders(); // Clear existing logging providers
-                builder.AddSerilog(dispose: true); // Dispose the logger when the application shuts down
-            });
-
-            // Configure Serilog for the second logger
-            Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
-                .Enrich.WithProperty("todo-logger", "toDoLogger")
-                .WriteTo.File(".\\logs\\todos.log") // Path to the second log file
-                .WriteTo.Console()
-                .CreateLogger();
-
-            // Add the second logger
-            services.AddLogging(builder =>
-            {
-                builder.ClearProviders(); // Clear existing logging providers
-                builder.AddSerilog(dispose: true); // Dispose the logger when the application shuts down
-            });
-
-
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -70,14 +32,10 @@ namespace ThirdAssignment_Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ThirdAssignment_Server v1"));
-            //}
 
-       
 
             app.UseRouting();
 

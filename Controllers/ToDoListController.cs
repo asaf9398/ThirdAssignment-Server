@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using log4net;
 using System.Diagnostics;
@@ -73,7 +71,7 @@ namespace ThirdAssignment_Server.Controllers
             stopwatch.Start();
             int requestNumber = RequestsCounter.GetCounter();
             log4net.GlobalContext.Properties["request-number"] = requestNumber;
-            _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");            
+            _requestsLogger.Info($"Incoming request | #{requestNumber} | resource: {HttpContext.Request.Path} | HTTP Verb {HttpContext.Request.Method}");
 
             int numOfToDo = countToDoByFilter(status);
             if (numOfToDo < 0)

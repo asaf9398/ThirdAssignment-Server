@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 
 namespace ThirdAssignment_Server
 {
@@ -17,7 +14,7 @@ namespace ThirdAssignment_Server
         public long dueDate { get; set; }
         public Status statusIndex { get; set; }
         public string status { get; set; }
-        public ToDoTask(string _title,string _content,long _dueDate)
+        public ToDoTask(string _title, string _content, long _dueDate)
         {
             id = nextId;
             title = _title;

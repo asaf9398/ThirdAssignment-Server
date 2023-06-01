@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using log4net;
 using log4net.Core;
-using System.Reflection;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
 using System.Diagnostics;
