@@ -11,7 +11,6 @@ using System.Reflection;
 using log4net.Core;
 using System.Diagnostics;
 
-
 namespace ThirdAssignment_Server.Controllers
 {
     public class Health : Controller
