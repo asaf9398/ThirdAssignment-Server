@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 
 namespace ThirdAssignment_Server
 {
@@ -9,7 +6,7 @@ namespace ThirdAssignment_Server
     {
         public object result { get; set; }
         public string errorMessage { get; set; }
-        public Response(object _result,string _errorMessage)
+        public Response(object _result, string _errorMessage)
         {
             result = _result;
             errorMessage = _errorMessage;
