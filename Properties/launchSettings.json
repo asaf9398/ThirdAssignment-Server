@@ -26,6 +26,23 @@
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "http://localhost:8496"
+    },
+    "Docker (1)": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "useSSL": true
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:8496/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "http://localhost:8496",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "distributionName": ""
     }
   }
 }

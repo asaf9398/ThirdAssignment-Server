@@ -1,0 +1,28 @@
+# Use the .NET SDK image as the base image
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the project file(s) and restore dependencies
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the entire project directory to the container
+COPY . ./
+
+# Build the application
+RUN dotnet publish -c Release -o out
+
+# Build the runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENV ASPNETCORE_URLS=http://*:9285
+
+# Expose the necessary port(s)
+EXPOSE 9285
+#EXPOSE 3769
+
+# Set the entry point
+ENTRYPOINT ["dotnet", "ThirdAssignment-Server.dll"]
