@@ -14,7 +14,7 @@ namespace ThirdAssignment_Server
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseUrls("http://localhost:9583");
+                    webBuilder.UseStartup<Startup>().UseUrls("http://*:9285");
                 });
     }
 }
